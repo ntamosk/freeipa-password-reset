@@ -115,7 +115,7 @@ class Email:
     @staticmethod
     def __is_valid_email(email):
         try:
-            validate_email(e:mail)
+            validate_email(email)
             return True
         except ValidationError:
             return False
