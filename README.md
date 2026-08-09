@@ -5,9 +5,9 @@
 2. Users can reset their own passwords with token that is sent to the user's emails
 3. The service has protection against brute force attacks
 4. The service is dedicated. It does not change the scheme or system files of FreeIPA. No problems with upgrade of FreeIPA
-5. The password reset page stylized as FreeIPA pages
+5. The password reset page stylised as FreeIPA pages
 6. SMS with tokens is sent through the Amazon SNS service.
-7. Tested with CentOS 7, python 2.7 and FreeIPA 4.4/4.5
+7. Tested with Ubuntu 24.04 LTS, python 3.12 and FreeIPA 4.12
 8. This instruction assumes that the service will be installed on the FreeIPA server.
 9. I recommend that you protect the service using a firewall and allow access only through the internal network
 10. This app is very small. You can easily audit the code.
@@ -18,7 +18,7 @@
 
 1. Configure FreeIPA
 2. Install & Configure App
-3. Set users mobile phones in their profile. The service require phone in "Telephone Number" field in international format like '+79991234567'
+3. Set users mobile phones in their profile. The service require phone in "Telephone Number" field in international format like '+25671234567'
 4. Enjoy!
 
 ## Configure FreeIPA
@@ -46,9 +46,9 @@ chmod 750 $(ipa -n user-show "ldap-passwd-reset" --raw |grep 'homedirectory' |aw
 ## Install App
 1. Install system dependencies:
 
-RHEL/CentOS 7
+Debian/Ubuntu 24.04 LTS
 ```
-yum install -y python-virtualenv python-pip python-ipaclient git-core
+sudo apt install python3 python3-pip python3-venv
 ```
 RHEL/CentOS 8
 ```
@@ -56,16 +56,16 @@ dnf install -y python3-virtualenv python3-pip python3-ipaclient git-core
 ```
 2. Clone repository to directory. (default is `/opt/data/IPAPasswordReset/`, but you can change it.):
 ```
-git clone https://github.com/larrabee/freeipa-password-reset.git /opt/data/IPAPasswordReset/
+git clone https://github.com/ntamosk/freeipa-password-reset.git /opt/data/IPAPasswordReset/
 ```
 3. Create virtual env:
 
-RHEL/CentOS 7
+DEBIAN/Ubuntu 24.04LTS
 
 ```
 cd /opt/data/IPAPasswordReset/
-virtualenv --system-site-packages ./virtualenv
-. ./virtualenv/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
 ```
 RHEL/CentOS 8
@@ -92,7 +92,7 @@ systemctl reload httpd
 ```
 7. Install redis (you can skip this step and use external redis):
 ```
-yum install -y redis
+dnf install -y redis
 systemctl enable --now redis
 ```
 8. Copy file `PasswordReset/PasswordReset/settings.py.example` to `PasswordReset/PasswordReset/settings.py` and modify it. You should change following vars:
