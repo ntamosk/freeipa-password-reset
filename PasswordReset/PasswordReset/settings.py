@@ -54,7 +54,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                #'django.template.context_processors.settings',
+                # 'django.template.context_processors.settings',
             ],
             "builtins": ["django.templatetags.static"],
         },
@@ -77,12 +77,15 @@ AUTH_PASSWORD_VALIDATORS = [
         # Activated by passing user=SimpleNamespace(username=uid, ...) to
         # validate_password() in __validate_password - without a user
         # object this validator silently no-ops.
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            "UserAttributeSimilarityValidator"
+        ),
     },
-    # Deliberately NO MinimumLengthValidator here - length is enforced
-    # against FreeIPA's LIVE policy (krbpwdminlength) in
-    # PasswdManager.__validate_password, not a hardcoded value. A
-    # hardcoded floor here could silently diverge from real IPA policy if
+    # NO MinimumLengthValidator here: length is enforced against
+    # FreeIPA's LIVE policy (krbpwdminlength) in
+    # PasswdManager.__validate_password, not a hardcoded value.
+    # A hardcoded floor here could silently diverge from real IPA policy if
     # it's ever changed - exactly the class of bug already fixed once in
     # this codebase (see __validate_password's krbpwdminlength handling).
     {
@@ -102,10 +105,19 @@ AUTH_PASSWORD_VALIDATORS = [
             # substitution to work - every documented example pairing
             # %(amount)d with a custom message uses this exact shape.
             "error_message": (
-                "This password has appeared in a data breach %(amount)d time. Please choose a different password.",
-                "This password has appeared in data breaches %(amount)d times. Please choose a different password.",
+                (
+                    "This password has appeared in a data breach %(amount)d time. "
+                    "Please choose a different password."
+                ),
+                (
+                    "This password has appeared in data breaches %(amount)d times. "
+                    "Please choose a different password."
+                ),
             ),
-            "help_message": "Your password can't be a commonly used or previously breached password.",
+            "help_message": (
+                "Your password can't be a commonly used or previously breached "
+                "password."
+            ),
         },
     },
 ]
@@ -242,15 +254,17 @@ PROVIDERS = {
         "enabled": True,
         "display_name": "Email",
         "options": {
-            "ldap_attribute_name": "street",  # <== use 'street' instead of 'mail'
+            "ldap_attribute_name": "street",  # use street, not mail
             "msg_template": (
                 "Dear {full_name},\n\n"
                 "We received a request to reset the password for your UCU account.\n\n"
                 "Your password reset token is: {token}\n"
-                "This token will expire in 5 minutes. Please use it promptly to complete your password reset.\n\n"
-                "If you did not request this password reset, you can safely ignore this email. "
-                "Your password will remain unchanged unless the reset process is completed. "
-                "If you believe this request was unauthorised, please contact University ICT Services (UIS).\n\n"
+                "This token will expire in 5 minutes. Please use it promptly to\n"
+                "complete your password reset.\n\n"
+                "If you did not request this password reset, you can safely ignore\n"
+                "this email. Your password will remain unchanged unless the reset\n"
+                "process is completed. If you believe this request was unauthorised,\n"
+                "please contact University ICT Services (UIS).\n\n"
                 "Thank you,\n\n"
                 "University ICT Services (UIS)"
             ),
