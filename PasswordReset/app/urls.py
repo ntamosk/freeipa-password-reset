@@ -1,9 +1,9 @@
-from django.conf.urls import url
+from django.urls import path
 from . import views
-from .views import *
 
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^gettoken/$', GetToken.as_view(), name='gettoken'),
-    url(r'^setpassword/$', SetPassword.as_view(), name='setpassword'),
+    path('', views.index, name='index'),
+    path('gettoken/', views.GetToken.as_view(), name='gettoken'),
+    path('setpassword/', views.SetPassword.as_view(), name='set_password'),
+    path('change/', views.ChangePassword.as_view(), name='change_password'),
 ]
