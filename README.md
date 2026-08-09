@@ -64,7 +64,7 @@ DEBIAN/Ubuntu 24.04LTS
 
 ```
 cd /opt/data/IPAPasswordReset/
-python3 -m venv .venv
+python3 -m venv .virtualenv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
